@@ -30,11 +30,14 @@ class Simulator:
         self.stations = set()
         for r in robots:
             initial_pos = tuple(r[1])
-            self.robots[r[0]] = RobotState(initial_pos, self.max_fluid, self.max_fuel)
+            self.robots[r[0]] = RobotState(
+                initial_pos, self.max_fluid, self.max_fuel)
             if initial_pos in self.stations:
-                raise ValueError('solution places two robots in the same initial position')
+                raise ValueError(
+                    'solution places two robots in the same initial position')
             elif self.on_board(initial_pos):
-                raise ValueError('base station was placed in the competition hall')
+                raise ValueError(
+                    'base station was placed in the competition hall')
             self.stations.add(initial_pos)
             self.robot_positions.add(initial_pos)
 
@@ -68,13 +71,14 @@ class Simulator:
         robot.fuel -= 1
         self.fuel_expended += 1
         self.robot_positions.add(dest)
-    
+
     def clean(self, robot, amount):
         actual_amount = min(amount, robot.fluid)
         robot.fluid -= actual_amount
         tile = robot.pos
         if self.on_board(tile):
-            self.contamination[tile] = max(self.contamination[tile] - actual_amount, 0)
+            self.contamination[tile] = max(
+                self.contamination[tile] - actual_amount, 0)
 
     def resupply(self, robot):
         if robot.pos in self.stations:
@@ -83,4 +87,4 @@ class Simulator:
 
     def on_board(self, tile):
         return tile[0] >= 0 and tile[1] >= 0 and \
-               tile[0] < self.shape[0] and tile[1] < self.shape[1]
+            tile[0] < self.shape[0] and tile[1] < self.shape[1]
