@@ -303,11 +303,6 @@ class Game:
                 if not robot.on_floor(self.floor_dimensions):
                     # print("here3")
                     actions.append(self.move_robot_onto_floor(robot))
-
-                elif self.should_recharge(robot):
-                    # recharge
-                    actions.extend(self.go_recharge(robot))
-                    # print("here4")
                 elif self.should_clean(robot):
                     # print("here5")
                     # print(robot.pos)
@@ -315,6 +310,12 @@ class Game:
                     # print(action)
                     if action:
                         actions.append(action)
+
+                elif self.should_recharge(robot):
+                    # recharge
+                    actions.extend(self.go_recharge(robot))
+                    # print("here4")
+
                 else:
                     # move robot
                     # get coordinates for it to go somewhere
@@ -379,8 +380,9 @@ class Game:
                 output_actions.append(action)
 
         output = {"robots": output_robots, "actions": output_actions}
-        output_file.write(output)
-        print(output)
+        output = {"robots": str(output_robots), "actions": str(output_actions)}
+        # print(output)
+        output_file.write(json.dumps(output))
         # make sure all robots are in a charging station
         print("here16")
         output_file.close()
